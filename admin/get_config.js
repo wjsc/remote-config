@@ -4,12 +4,12 @@ program
     .requiredOption('-p, --passphrase <path>', 'Passphrase')
     .requiredOption('-n, --namespace <namespace>', 'Config namespace')
     .requiredOption('-k, --key <key>', 'Config key')
+    .requiredOption('-h, --host <value>', 'Remote config server ip:port')
     .parse(process.argv);
 
 
 const client = require('../client/index').init(
-    '127.0.0.1',
-    3000,
+    program.host,
     program.passphrase,
     program.private
 )
@@ -19,6 +19,6 @@ client.get( {
         key: program.key
     }, 
     (err, config) => {
-        err ? console.error(error) : console.log(config)
+        err ? console.error(err) : console.log(config)
     }
 );

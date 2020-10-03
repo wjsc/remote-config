@@ -34,6 +34,14 @@ node generate_keys.js -u public.pub -r private -p pass20
 ### 5. Test saving & retrieving a remote config
 ```
 cd ./admin
-node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20
-node get_config.js -r private -p pass20 -n ns20 -k key20
+node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20 -h 127.0.0.1:3000
+node get_config.js -r private -p pass20 -n ns20 -k key20 -h 127.0.0.1:3000
+```
+
+
+### Admin help
+```
+node get_config.js --help
+node set_config.js --help
+node generate_keys.js --help
 ```

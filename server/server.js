@@ -1,7 +1,7 @@
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader')
 
-const init = (database, protoPath, ip, port) => {
+const init = (database, protoPath, host) => {
 
     const packageDefinition = protoLoader.loadSync(protoPath);
     const proto = grpc.loadPackageDefinition(packageDefinition);
@@ -25,7 +25,7 @@ const init = (database, protoPath, ip, port) => {
         }
     });
     
-    server.bind(`${ip}:${port}`, grpc.ServerCredentials.createInsecure())
+    server.bind(host, grpc.ServerCredentials.createInsecure())
     server.start();
     return server;
 }

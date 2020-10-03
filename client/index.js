@@ -3,11 +3,11 @@ const grpc = require('grpc')
 const protoLoader = require('@grpc/proto-loader')
 const security = require('./security');
 
-const init = (ip, port, passphrase, private, public = false) => {
+const init = (host, passphrase, private, public = false) => {
     const packageDefinition = protoLoader.loadSync('../keys.proto');
     const proto = grpc.loadPackageDefinition(packageDefinition);
     const ConfigService = proto.ConfigService
-    const client = new ConfigService(`${ip}:${port}`, grpc.credentials.createInsecure());;
+    const client = new ConfigService(host, grpc.credentials.createInsecure());;
     const privateKey = fs.readFileSync(private, 'utf8');
     const publicKey = public && fs.readFileSync(public, 'utf8');
 

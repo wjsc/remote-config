@@ -25,15 +25,15 @@ npm i
 cd ..
 ```
 
-### 4. Generate private & public keys
+### 4. Generate private & public keys for a specific namespace
 ```
 cd ./admin
-node generate_keys.js -u public.pub -r private -p pass19
+node generate_keys.js -u public.pub -r private -p pass20
 ```
 
 ### 5. Test saving & retrieving a remote config
 ```
 cd ./admin
-node set_config.js -u public.pub -r private -p pass19 -n ns19 -k key19 -v value19
-node get_config.js -r private -p pass19 -n ns19 -k key19
+node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20
+node get_config.js -r private -p pass20 -n ns20 -k key20
 ```

@@ -36,13 +36,10 @@ docker run -p3000:3000 \
     -d remote-config-grpc-server:1.0
 ```
 
-### 3. Install clients dependencies
+### 3. Install CLI client dependencies
 ```
-cd ../client
-npm i
 cd ../admin
 npm i
-cd ..
 ```
 
 ### 4. Generate private & public keys for a specific namespace

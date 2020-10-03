@@ -5,17 +5,17 @@
 - Architecture:
     - Persistent engine: redis
     - Remote config server connected to persistent engine
-    - Remote config client
+    - Remote config client: nodejs client
     - Remote config admin: Command line interface(CLI) client
 
-- The remote config server stores configuration objects with this structure:
+- The remote config server stores remote-configs with this structure:
     - namespace
     - key
     - value
 
-- Every remote config stored has client side encryption with asymetric keys.
+- Every remote-config stored has client side encryption with asymetric keys.
 - namespace & key are encrypted with private key to avoid collisions with other clients
-- value is encrypted with public key and it's only accesible by the config client owner
+- value is encrypted with public key and it's only accesible by the remote-config owner
 
 
 ## Getting started
@@ -50,7 +50,7 @@ cd ./admin
 node generate_keys.js -u public.pub -r private -p pass20
 ```
 
-### 5. Test saving & retrieving a remote config
+### 5. Test saving & retrieving a remote-config
 ```
 cd ./admin
 node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20 -h 127.0.0.1:3000

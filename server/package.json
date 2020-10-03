@@ -1,11 +1,15 @@
 {
-  "name": "remote-config-grpc-server",
+  "name": "remote-config-server",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjsc/remote-config-grpc.git"
   },
   "author": "wjsc",
   "license": "MIT",

@@ -4,6 +4,6 @@ const database = require('./database').init({
 });
 require('./server').init(
     database, 
-    '../keys.proto', 
+    './keys.proto', 
     `${process.env.HOST}:${process.env.PORT }`, 
 );

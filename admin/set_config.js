@@ -10,7 +10,7 @@ program
     .parse(process.argv);
 
 
-const client = require('../client/index').init(
+const client = require('@wjsc/remote-config-client').init(
     program.host,
     program.passphrase,
     program.private,

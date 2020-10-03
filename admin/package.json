@@ -1,0 +1,22 @@
+{
+  "name": "remote-config-grpc-admin",
+  "version": "0.0.1",
+  "description": "remote-config-grpc-admin",
+  "main": "generate_keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjsc/remote-config-grpc.git"
+  },
+  "author": "wjsc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wjsc/remote-config-grpc/issues"
+  },
+  "homepage": "https://github.com/wjsc/remote-config-grpc#readme",
+  "dependencies": {
+    "commander": "^6.1.0"
+  }
+}

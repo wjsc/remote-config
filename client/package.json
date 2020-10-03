@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"node index.js",
+    "start": "node index.js",
     "test": "exit 0"
   },
   "author": "wjsc",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.5",
     "grpc": "^1.24.3"

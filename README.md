@@ -1,9 +1,9 @@
-### Start container with redis
+### 1. Start redis as persistent engine
 ```
 docker run --name remote-config-db -p6379:6379 -d redis
 ```
 
-### Build server
+### 2. Build remote config server
 ```
 docker build -t remote-config-grpc-server:1.0 . &&
 docker run -p3000:3000 \
@@ -14,15 +14,26 @@ docker run -p3000:3000 \
     remote-config-grpc-server:1.0
 ```
 
-### Resources
+### 3. Install dependencies
 ```
-https://stackoverflow.com/questions/43911793/cannot-connect-to-go-grpc-server-running-in-local-docker-container
+cd ./server
+npm i
+cd ../client
+npm i
+cd ../admin
+npm i
+cd ..
 ```
 
-
+### 4. Generate private & public keys
 ```
-rm public.pub private
+cd ./admin
 node generate_keys.js -u public.pub -r private -p pass19
+```
+
+### 5. Test saving & retrieving a remote config
+```
+cd ./admin
 node set_config.js -u public.pub -r private -p pass19 -n ns19 -k key19 -v value19
 node get_config.js -r private -p pass19 -n ns19 -k key19
 ```

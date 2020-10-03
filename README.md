@@ -5,7 +5,7 @@
 - Architecture:
     - Persistent engine: redis
     - Remote config server connected to persistent engine
-    - Remote config client: nodejs client
+    - Remote config client: nodejs client https://www.npmjs.com/package/@wjsc/remote-config-client
     - Remote config admin: Command line interface(CLI) client
 
 - The remote config server stores remote-configs with this structure:

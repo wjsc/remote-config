@@ -25,7 +25,7 @@ const init = (database, protoPath, host) => {
         }
     });
     
-    server.bind(host, grpc.ServerCredentials.createInsecure())
+    server.bind(host, grpc.ServerCredentials.createInsecure());
     server.start();
     return server;
 }

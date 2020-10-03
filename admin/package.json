@@ -1,7 +1,7 @@
 {
   "name": "remote-config-cli",
   "version": "0.0.1",
-  "description": "remote-config-grpc-cli",
+  "description": "@wjsc/remote-config-grpc-cli",
   "main": "generate_keys.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

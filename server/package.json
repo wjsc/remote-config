@@ -1,5 +1,5 @@
 {
-  "name": "remote-config-server",
+  "name": "@wjsc/remote-config-server",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",

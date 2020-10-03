@@ -7,6 +7,10 @@ const publicEncrypt = (utf8Data, key) =>
 const privateDecrypt = (base64Data, key, passphrase) => 
     crypto.privateDecrypt({ key, passphrase }, Buffer.from(base64Data,'base64') ).toString('utf8');
 
+const privateEncrypt = (utf8Data, key, passphrase) => 
+    crypto.privateEncrypt({ key, passphrase}, Buffer.from(utf8Data, 'utf8')).toString('base64');
+
+
 const generateKeys = (passphrase) =>  {
     const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', 
         {
@@ -33,5 +37,6 @@ const generateKeys = (passphrase) =>  {
 module.exports = {
     generateKeys,
     publicEncrypt,
-    privateDecrypt
+    privateDecrypt,
+    privateEncrypt
 }

@@ -21,7 +21,8 @@ https://stackoverflow.com/questions/43911793/cannot-connect-to-go-grpc-server-ru
 
 
 ```
-node generate_keys.js -u public.pub -r private -p hello-world
-node save_config.js -u public.pub -r private -p hello-world -n ns -k key -v hello-world!
-node save_config.js -u public.pub -r private -p hello-world -n ns -k key2 -v Hola-mundo!
+rm public.pub private
+node generate_keys.js -u public.pub -r private -p pass19
+node set_config.js -u public.pub -r private -p pass19 -n ns19 -k key19 -v value19
+node get_config.js -r private -p pass19 -n ns19 -k key19
 ```

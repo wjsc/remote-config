@@ -1,6 +1,8 @@
 FROM node:12.18.2-alpine
 LABEL Maintainer="wjsc"
-WORKDIR /usr/app/
+WORKDIR /home/node/app
+RUN mkdir /home/node/.storage
+RUN chown node:node /home/node/.storage
 COPY package*.json ./
 RUN npm install
 COPY . .

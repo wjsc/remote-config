@@ -3,7 +3,7 @@
 ## General
 
 - Architecture:
-    - Storage engine: redis or filesystem
+    - Storage engine: redis, mongodb or filesystem
     - remote-config Server connected to storage engine
     - remote-config Client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
     - remote-config Client for Command line interface(CLI)
@@ -21,7 +21,7 @@
 ## Getting started
 ### 1. Start redis as storage engine
 ```
-docker run --name remote-config-db -p6379:6379 -d redis
+docker run --name remote-config-db-redis -p6379:6379 -d redis
 ```
 
 ### 2. Build remote config server and connect to redis storage
@@ -29,6 +29,7 @@ docker run --name remote-config-db -p6379:6379 -d redis
 cd ./server
 docker build -t remote-config-server:1.0 . 
 docker run -p3000:3000 \
+    -e STORAGE=redis \
     -e DATABASE_HOST=host.docker.internal \
     -e DATABASE_PORT=6379 \
     -e HOST=0.0.0.0 \
@@ -105,14 +106,33 @@ Options:
 ```
 
 
-### Build remote config server and connect to filesystem storage
+### Build remote config server and connect to filesystem as storage engine
 ```
 cd ./server
 docker build -t remote-config-server:1.0 .
 docker run -p3000:3000 \
+    -e STORAGE=filesystem \
     -v $PWD/data:/home/node/.storage \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
     --name remote-config-server-fs \
+    -d remote-config-server:1.0
+```
+
+
+### Build remote config server and connect to mongodb as storage engine
+```
+docker run --name remote-config-db-mongodb -p27017:27017 -d mongo
+cd ./server
+docker build -t remote-config-server:1.0 .
+docker run -p3000:3000 \
+    -e STORAGE=mongodb \
+    -e DATABASE_HOST=host.docker.internal \
+    -e DATABASE_PORT=27017 \
+    -e DATABASE_NAME=remote-config-storage \
+    -e DATABASE_COLLECTION=remote-config-collection \
+    -e HOST=0.0.0.0 \
+    -e PORT=3000 \
+    --name remote-config-server-mongodb \
     -d remote-config-server:1.0
 ```

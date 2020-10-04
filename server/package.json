@@ -16,6 +16,7 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.5",
     "grpc": "^1.24.3",
+    "mongodb": "^3.6.2",
     "redis": "^3.0.2"
   }
 }

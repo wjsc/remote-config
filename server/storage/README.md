@@ -1,4 +1,4 @@
-### Database interface
+### Storage interface
 
 ```
 

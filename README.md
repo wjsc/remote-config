@@ -24,7 +24,7 @@
 docker run --name remote-config-db -p6379:6379 -d redis
 ```
 
-### 2. Build remote config server
+### 2. Build remote config server and connect to redis storage
 ```
 cd ./server
 docker build -t remote-config-server:1.0 . 
@@ -33,6 +33,7 @@ docker run -p3000:3000 \
     -e DATABASE_PORT=6379 \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
+    --name remote-config-server-redis \
     -d remote-config-server:1.0
 ```
 
@@ -52,7 +53,9 @@ node generate_keys.js -u public.pub -r private -p pass20
 ```
 cd ./client/cli
 node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20 -h 127.0.0.1:3000
+// output: { namespace: 'ns20', key: 'key20', value: 'value20' }
 node get_config.js -r private -p pass20 -n ns20 -k key20 -h 127.0.0.1:3000
+// output: { namespace: 'ns20', key: 'key20', value: 'value20' }
 ```
 
 
@@ -102,7 +105,7 @@ Options:
 ```
 
 
-### Run with file system storage instead of redis
+### Build remote config server and connect to filesystem storage
 ```
 cd ./server
 docker build -t remote-config-server:1.0 .
@@ -110,5 +113,6 @@ docker run -p3000:3000 \
     -v $PWD/data:/home/node/.storage \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
+    --name remote-config-server-fs \
     -d remote-config-server:1.0
 ```

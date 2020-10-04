@@ -5,8 +5,8 @@
 - Architecture:
     - Persistent engine: redis
     - Remote config server connected to persistent engine
-    - Remote config client: nodejs client https://www.npmjs.com/package/@wjsc/remote-config-client
-    - Remote config admin: Command line interface(CLI) client
+    - Remote config client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
+    - Remote config client for Command line interface(CLI)
 
 - The remote config server stores remote-configs with this structure:
     - namespace
@@ -38,28 +38,26 @@ docker run -p3000:3000 \
 
 ### 3. Install clients dependencies
 ```
-cd ../client
-npm i
-cd ../admin
+cd ../client/cli
 npm i
 cd ..
 ```
 
 ### 4. Generate private & public keys for a specific namespace
 ```
-cd ./admin
+cd ./client/cli
 node generate_keys.js -u public.pub -r private -p pass20
 ```
 
 ### 5. Test saving & retrieving a remote-config
 ```
-cd ./admin
+cd ./client/cli
 node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20 -h 127.0.0.1:3000
 node get_config.js -r private -p pass20 -n ns20 -k key20 -h 127.0.0.1:3000
 ```
 
 
-### Admin help
+### CLI Client help
 
 #### 1. Generate keys
 ```

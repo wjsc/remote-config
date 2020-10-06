@@ -1,5 +1,7 @@
 # remote-config-grpc 
 
+Externalized config server with built-in encryption for microservices architecture
+
 ## General
 
 - Architecture:

@@ -1,42 +1,31 @@
-const get = ( security, get, privateKey, passphrase) => {
+const LIMIT = ':';
+
+const get = ( { privateDecrypt, hash }, get, privateKey, passphrase ) => {
     return new Proxy(get, {
-        apply: (target, thisArg, [config, callback]) => {
+        apply: (target, thisArg, [{ namespace, key, secure = true }, callback]) => {
             return target.call(thisArg, {
-                    namespace: security.privateEncrypt(
-                        config.namespace, privateKey, passphrase
-                    ),
-                    key: security.privateEncrypt(
-                        config.key, privateKey, passphrase
-                    ),
+                    namespace: namespace + LIMIT + hash(namespace),
+                    key,
                 }, 
                 (error, configResult) => callback(error, {
-                    ...config,
-                    value: security.privateDecrypt(
-                        configResult.value, privateKey, passphrase 
-                    )
+                    namespace,
+                    key,
+                    value: secure ? privateDecrypt( configResult.value, privateKey, passphrase ) : configResult.value
                 })
             );
         }
     });
 }
 
-const set = ( security, set, privateKey, passphrase, publicKey ) => {
+const set = ( { publicEncrypt, hash }, set, publicKey ) => {
     return new Proxy(set, {
-        apply: (target, thisArg, [config, callback]) => {
+        apply: (target, thisArg, [{ namespace, key, value, secure = true }, callback]) => {
             return target.call(thisArg, {
-                    namespace: security.privateEncrypt(
-                        config.namespace, privateKey, passphrase
-                    ),
-                    key: security.privateEncrypt(
-                        config.key, privateKey, passphrase
-                    ),
-                    value: security.publicEncrypt(
-                        config.value, publicKey
-                    ),
+                    namespace: namespace + LIMIT  + hash(namespace),
+                    key,
+                    value: secure ? publicEncrypt( value, publicKey ) : value,
                 }, 
-                (error, _) => callback(error, 
-                    config
-                )
+                (error, _) => callback(error, { namespace, key, value })
             );
         }
     });

@@ -16,7 +16,6 @@ Externalized config server with built-in encryption for microservices architectu
     - value
 
 - Every remote-config stored has client side encryption with asymetric keys.
-- namespace & key are encrypted with private key to avoid collisions with other clients
 - value is encrypted with public key and it's only accesible by the remote-config owner
 
 
@@ -49,16 +48,29 @@ npm i
 ### 4. Generate private & public keys for a specific namespace
 ```
 cd ./client/cli
-node generate_keys.js -u public.pub -r private -p pass20
+node generate_keys.js -u key.public -r key.private -p my-pass
 ```
 
-### 5. Test saving & retrieving a remote-config
+### 5. Test saving & retrieving a remote-config with encryption
 ```
 cd ./client/cli
-node set_config.js -u public.pub -r private -p pass20 -n ns20 -k key20 -v value20 -h 127.0.0.1:3000
-// output: { namespace: 'ns20', key: 'key20', value: 'value20' }
-node get_config.js -r private -p pass20 -n ns20 -k key20 -h 127.0.0.1:3000
-// output: { namespace: 'ns20', key: 'key20', value: 'value20' }
+
+node set_config.js -u key.public -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
+// output: { namespace: 'ns1', key: 'key1', value: 'value1' }
+
+node get_config.js -r key.private -p my-pass -n ns1 -k key1 -h 127.0.0.1:3000
+// output: { namespace: 'ns1', key: 'key1', value: 'value1' }
+```
+
+### 6. Test saving & retrieving a remote-config without encryption
+```
+cd ./client/cli
+
+node set_config.js -u key.public -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
+// output: { namespace: 'ns2', key: 'key2', value: 'value2' }
+
+node get_config.js -r key.private -p my-pass -n ns2 -k key2 -h 127.0.0.1:3000 -x
+// output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 ```
 
 

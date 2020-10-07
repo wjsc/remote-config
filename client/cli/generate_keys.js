@@ -2,6 +2,7 @@ const fs = require('fs');
 const { program } = require('commander');
 const { security } = require('@wjsc/remote-config-client');
 
+
 program
     .requiredOption('-u, --public <path>', 'Public key path')
     .requiredOption('-r, --private <path>', 'Private key path')

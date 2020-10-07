@@ -94,7 +94,7 @@ node get_config.js --help
 Usage: get_config [options]
 
 Options:
-  -x, --share                  Do not encrypt value
+  -x, --share                  Do not decrypt value
   -r, --private <path>         Private key path
   -p, --passphrase <path>      Passphrase
   -n, --namespace <namespace>  Config namespace

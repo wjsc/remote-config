@@ -66,10 +66,10 @@ node get_config.js -r key.private -p my-pass -n ns1 -k key1 -h 127.0.0.1:3000
 ```
 cd ./client/cli
 
-node set_config.js -u key.public -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
+node set_config.js -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 
-node get_config.js -r key.private -p my-pass -n ns2 -k key2 -h 127.0.0.1:3000 -x
+node get_config.js -n ns2 -k key2 -h 127.0.0.1:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 ```
 

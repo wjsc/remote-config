@@ -1,8 +1,8 @@
 const { program } = require('commander');
 program
     .option('-x, --share', 'Do not encrypt value')
-    .requiredOption('-r, --private <path>', 'Private key path')
-    .requiredOption('-p, --passphrase <path>', 'Passphrase')
+    .option('-r, --private <path>', 'Private key path')
+    .option('-p, --passphrase <path>', 'Passphrase')
     .requiredOption('-n, --namespace <namespace>', 'Config namespace')
     .requiredOption('-k, --key <key>', 'Config key')
     .requiredOption('-h, --host <value>', 'Remote config server ip:port')

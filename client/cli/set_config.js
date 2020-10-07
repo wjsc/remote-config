@@ -1,7 +1,7 @@
 const { program } = require('commander');
 program
     .option('-x, --share', 'Do not encrypt value')
-    .requiredOption('-u, --public <path>', 'Public key path')
+    .option('-u, --public <path>', 'Public key path')
     .requiredOption('-n, --namespace <namespace>', 'Config namespace')
     .requiredOption('-k, --key <key>', 'Config key')
     .requiredOption('-v, --value <value>', 'Config value')

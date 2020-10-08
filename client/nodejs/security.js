@@ -1,8 +1,5 @@
 const crypto = require("crypto");
 
-const hash = (str, algorithm, options) => 
-    crypto.createHash(algorithm || 'sha256', options).update(str).digest("hex");
-
 const publicEncrypt = (utf8Data, key) => 
     crypto.publicEncrypt(key, Buffer.from(utf8Data, 'utf8')).toString('base64');
 
@@ -41,6 +38,5 @@ module.exports = {
     generateKeys,
     publicEncrypt,
     privateDecrypt,
-    privateEncrypt,
-    hash
+    privateEncrypt
 }

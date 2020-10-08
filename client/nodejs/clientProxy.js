@@ -1,10 +1,15 @@
 const LIMIT = ':';
 
-const get = ( { privateDecrypt, hash }, get, privateKey, passphrase ) => {
+
+const formatNamespace = (secure, privateEncrypt, namespace, privateKey, passphrase) => secure 
+    ? namespace + LIMIT + privateEncrypt(namespace, privateKey, passphrase) 
+    : namespace;
+
+const get = ( { privateEncrypt, privateDecrypt }, get, privateKey, passphrase ) => {
     return new Proxy(get, {
         apply: (target, thisArg, [{ namespace, key, secure = true }, callback]) => {
             return target.call(thisArg, {
-                    namespace: namespace + LIMIT + hash(namespace),
+                    namespace: formatNamespace(secure, privateEncrypt, namespace, privateKey, passphrase),
                     key,
                 }, 
                 (error, configResult) => callback(error, {
@@ -17,11 +22,11 @@ const get = ( { privateDecrypt, hash }, get, privateKey, passphrase ) => {
     });
 }
 
-const set = ( { publicEncrypt, hash }, set, publicKey ) => {
+const set = ( { privateEncrypt, publicEncrypt }, set, privateKey, passphrase, publicKey ) => {
     return new Proxy(set, {
         apply: (target, thisArg, [{ namespace, key, value, secure = true }, callback]) => {
             return target.call(thisArg, {
-                    namespace: namespace + LIMIT  + hash(namespace),
+                    namespace: formatNamespace(secure, privateEncrypt, namespace, privateKey, passphrase),
                     key,
                     value: secure ? publicEncrypt( value, publicKey ) : value,
                 }, 

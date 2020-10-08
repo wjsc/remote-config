@@ -55,7 +55,7 @@ node generate_keys.js -u key.public -r key.private -p my-pass
 ```
 cd ./client/cli
 
-node set_config.js -u key.public -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
+node set_config.js -u key.public -r key.private -p my-pass -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 
 node get_config.js -r key.private -p my-pass -n ns1 -k key1 -h 127.0.0.1:3000

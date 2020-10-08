@@ -12,7 +12,7 @@ const init = (security, protoPath) => ( host, passphrase, private, public) => {
     const publicKey = public && fs.readFileSync(public, 'utf8');
 
     client.get = clientProxy.get(security, client.get, privateKey, passphrase);
-    client.set = clientProxy.set(security, client.set, publicKey);
+    client.set = clientProxy.set(security, client.set, privateKey, passphrase, publicKey);
 
     return client;
 };

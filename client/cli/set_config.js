@@ -2,6 +2,8 @@ const { program } = require('commander');
 program
     .option('-x, --share', 'Do not encrypt value')
     .option('-u, --public <path>', 'Public key path')
+    .option('-r, --private <path>', 'Private key path')
+    .option('-p, --passphrase <path>', 'Passphrase')
     .requiredOption('-n, --namespace <namespace>', 'Config namespace')
     .requiredOption('-k, --key <key>', 'Config key')
     .requiredOption('-v, --value <value>', 'Config value')
@@ -11,8 +13,8 @@ program
 
 const client = require('@wjsc/remote-config-client').init(
     program.host,
-    false,
-    false,
+    program.passphrase,
+    program.private,
     program.public
 );
 

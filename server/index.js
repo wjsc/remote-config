@@ -9,7 +9,9 @@ const {
     DATABASE_PORT,
     DATABASE_NAME,
     DATABASE_COLLECTION,
-    STORAGE
+    STORAGE,
+    HOST, 
+    PORT
 } = process.env;
 
 const initer = new Map([
@@ -24,9 +26,6 @@ const launch = async () => {
         storage, 
         './keys.proto', 
         `${HOST}:${PORT }`
-        ca_cert,
-        server_key,
-        server_cert    
     );
 }
 

@@ -1,7 +1,9 @@
+const fs = require('fs');
 const redisInit = require('./storage/redis');
 const mongodbInit = require('./storage/mongodb');
 const filesystemInit = require('./storage/filesystem');
 const server = require('./server');
+const credentials = require('./credentials');
 
 const { 
     HOME,
@@ -11,8 +13,13 @@ const {
     DATABASE_COLLECTION,
     STORAGE,
     HOST, 
-    PORT
+    PORT,
+    CA_CERT_PATH,
+    KEY_PATH,
+    CERT_PATH
 } = process.env;
+
+const loadFile = path => path && fs.readFileSync(path, 'utf8');
 
 const initer = new Map([
     ['mongodb', () => mongodbInit.init( DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_COLLECTION )],
@@ -23,9 +30,13 @@ const initer = new Map([
 const launch = async () => {
     const storage = await initer.get(STORAGE)();
     server.init( 
-        storage, 
+        storage,
+        credentials,
         './keys.proto', 
-        `${HOST}:${PORT }`
+        `${HOST}:${PORT }`,
+        loadFile(CA_CERT_PATH),
+        loadFile(KEY_PATH),
+        loadFile(CERT_PATH)
     );
 }
 

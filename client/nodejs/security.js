@@ -4,14 +4,14 @@ const publicEncrypt = (utf8Data, key) =>
     crypto.publicEncrypt(key, Buffer.from(utf8Data, 'utf8')).toString('base64');
 
 
-const privateDecrypt = (base64Data, key, passphrase) => 
-    crypto.privateDecrypt({ key, passphrase }, Buffer.from(base64Data,'base64') ).toString('utf8');
+const privateDecrypt = (base64Data, key) => 
+    crypto.privateDecrypt({ key }, Buffer.from(base64Data,'base64') ).toString('utf8');
 
-const privateEncrypt = (utf8Data, key, passphrase) => 
-    crypto.privateEncrypt({ key, passphrase}, Buffer.from(utf8Data, 'utf8')).toString('base64');
+const privateEncrypt = (utf8Data, key) => 
+    crypto.privateEncrypt({ key}, Buffer.from(utf8Data, 'utf8')).toString('base64');
 
 
-const defaultRSAKeyPairOptions = passphrase => ({
+const defaultRSAKeyPairOptions = {
     modulusLength: 4096,
     namedCurve: 'secp256k1', 
     publicKeyEncoding: {
@@ -21,17 +21,16 @@ const defaultRSAKeyPairOptions = passphrase => ({
     privateKeyEncoding: {
         type: 'pkcs8',
         format: 'pem',
-        cipher: 'aes-256-cbc',
-        passphrase
+        cipher: 'aes-256-cbc'
     } 
-});
+};
 
 const defaultType = 'rsa';
 
-const generateKeys = (passphrase, type, RSAKeyPairOptions = {}) =>  
+const generateKeys = (type, RSAKeyPairOptions = {}) =>  
     crypto.generateKeyPairSync(
         type || defaultType, 
-        Object.assign(defaultRSAKeyPairOptions(passphrase), RSAKeyPairOptions)
+        Object.assign(defaultRSAKeyPairOptions, RSAKeyPairOptions)
     );
 
 module.exports = {

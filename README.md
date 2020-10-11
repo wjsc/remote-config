@@ -35,6 +35,10 @@ docker run -p3000:3000 \
     -e DATABASE_PORT=6379 \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
+    -v $PWD/certs:/home/node/certs/ \
+    -e CA_CERT_PATH=/home/node/certs/ca.crt \
+    -e KEY_PATH=/home/node/certs/server.key \
+    -e CERT_PATH=/home/node/certs/server.crt \
     --name remote-config-server-redis \
     -d remote-config-server:1.0
 ```
@@ -45,20 +49,20 @@ cd ./client/cli
 npm i
 ```
 
-### 4. Generate private & public keys for a specific namespace
-```
-cd ./client/cli
-node generate_keys.js -u key.public -r key.private -p my-pass
-```
+### 4. Generate private & public keys for a specific namespace for full TLS/SSL authentication
+- Server private key & certificate
+- Client private key & certificate 
+- Certificate authority certificate
+
 
 ### 5. Test saving & retrieving a remote-config with encryption
 ```
 cd ./client/cli
 
-node set_config.js -u key.public -r key.private -p my-pass -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 
-node get_config.js -r key.private -p my-pass -n ns1 -k key1 -h 127.0.0.1:3000
+node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h 127.0.0.1:3000
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 ```
 
@@ -66,29 +70,17 @@ node get_config.js -r key.private -p my-pass -n ns1 -k key1 -h 127.0.0.1:3000
 ```
 cd ./client/cli
 
-node set_config.js -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 
-node get_config.js -n ns2 -k key2 -h 127.0.0.1:3000 -x
+node get_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h 127.0.0.1:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 ```
 
 
 ### CLI Client help
 
-#### 1. Generate keys
-```
-node generate_keys.js --help
-Usage: generate_keys [options]
-
-Options:
-  -u, --public <path>            Public key path
-  -r, --private <path>           Private key path
-  -p, --passphrase <passphrase>  Passphrase
-  -h, --help                     display help for command
-```
-
-#### 2. Retrieve a remote config
+#### 1. Retrieve a remote config
 ```
 node get_config.js --help
 Usage: get_config [options]
@@ -104,7 +96,7 @@ Options:
 
 ```
 
-#### 3. Save a remote config
+#### 2. Save a remote config
 ```
 node set_config.js --help
 Usage: set_config [options]
@@ -130,6 +122,10 @@ docker run -p3000:3000 \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
     --name remote-config-server-fs \
+    -v $PWD/certs:/home/node/certs/ \
+    -e CA_CERT_PATH=/home/node/certs/ca.crt \
+    -e KEY_PATH=/home/node/certs/server.key \
+    -e CERT_PATH=/home/node/certs/server.crt \
     -d remote-config-server:1.0
 ```
 
@@ -147,6 +143,26 @@ docker run -p3000:3000 \
     -e DATABASE_COLLECTION=remote-config-collection \
     -e HOST=0.0.0.0 \
     -e PORT=3000 \
+    -v $PWD/certs:/home/node/certs/ \
+    -e CA_CERT_PATH=/home/node/certs/ca.crt \
+    -e KEY_PATH=/home/node/certs/server.key \
+    -e CERT_PATH=/home/node/certs/server.crt \
     --name remote-config-server-mongodb \
     -d remote-config-server:1.0
+```
+
+### Enviromental variables supoorted
+```
+STORAGE: Storage engine. Redis OR mongodb OR filesystem
+DATABASE_HOST: Database connection endpoint
+DATABASE_PORT: Database connection port
+DATABASE_NAME: Database name
+DATABASE_COLLECTION: Optional. Only when using mongodb as storage engine.
+HOST: Server binding IP
+PORT: Server binding port
+CA_CERT_PATH: Optional. Certificate authority certificate path for SSL/TLS authentication. This file must be mounted.
+KEY_PATH: Optional. Server private key path for SSL/TLS authentication. This file must be mounted.
+CERT_PATH: Optional. Server certificate path for SSL/TLS authentication. This file must be mounted.
+
+/// If CA_CERT_PATH, KEY_PATH & CERT_PATH are not defined, the server can run in insecure mode
 ```

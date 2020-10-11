@@ -1,6 +1,6 @@
 # remote-config-grpc 
 
-Externalized config server with built-in encryption for microservices architecture
+Externalized config server with built-in encryption for microservices architecture: https://microservices.io/patterns/externalized-configuration.html
 
 ## General
 
@@ -53,6 +53,7 @@ npm i
 - Server private key & certificate
 - Client private key & certificate 
 - Certificate authority certificate
+- Example using certstrap: https://jsherz.com/grpc/node/nodejs/mutual/authentication/ssl/2017/10/27/grpc-node-with-mutual-auth.html
 
 
 ### 5. Test saving & retrieving a remote-config with encryption

@@ -86,9 +86,10 @@ node get_config.js --help
 Usage: get_config [options]
 
 Options:
-  -x, --share                  Do not decrypt value
-  -r, --private <path>         Private key path
-  -p, --passphrase <path>      Passphrase
+  -x, --share                  Do not encrypt value
+  -r, --private <path>         Client private key path
+  -l, --clientcert <path>      Client Certificate path
+  -a, --cacert <path>          CA Certificate path
   -n, --namespace <namespace>  Config namespace
   -k, --key <key>              Config key
   -h, --host <value>           Remote config server ip:port
@@ -103,7 +104,9 @@ Usage: set_config [options]
 
 Options:
   -x, --share                  Do not encrypt value
-  -u, --public <path>          Public key path
+  -r, --private <path>         Client private key path
+  -l, --clientcert <path>      Client Certificate path
+  -a, --cacert <path>          CA Certificate path
   -n, --namespace <namespace>  Config namespace
   -k, --key <key>              Config key
   -v, --value <value>          Config value

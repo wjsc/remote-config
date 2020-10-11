@@ -151,7 +151,7 @@ docker run -p3000:3000 \
     -d remote-config-server:1.0
 ```
 
-### Enviromental variables supoorted
+### Environment variables supported
 ```
 STORAGE: Storage engine. Redis OR mongodb OR filesystem
 DATABASE_HOST: Database connection endpoint

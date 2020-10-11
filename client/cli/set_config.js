@@ -1,5 +1,12 @@
+const readline = require("readline");
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
 const fs = require('fs');
 const { program } = require('commander');
+
 program
     .option('-x, --share', 'Do not encrypt value')
     .option('-r, --private <path>', 'Client private key path')
@@ -7,7 +14,6 @@ program
     .option('-a, --cacert <path>', 'CA Certificate path')
     .requiredOption('-n, --namespace <namespace>', 'Config namespace')
     .requiredOption('-k, --key <key>', 'Config key')
-    .requiredOption('-v, --value <value>', 'Config value')
     .requiredOption('-h, --host <value>', 'Remote config server ip:port')
     .parse(process.argv);
 
@@ -20,13 +26,25 @@ const client = require('@wjsc/remote-config-client').init(
     loadFile(program.clientcert)
 );
 
-client.set( { 
-        namespace: program.namespace , 
-        key: program.key, 
-        value: program.value,
-        secure: !program.share
-    }, 
-    (err, config) => {
-        err ? console.error(err) : console.log(config)
-    }
-);
+rl.question("Value? ", value => {
+    client.set( { 
+            namespace: program.namespace , 
+            key: program.key, 
+            value,
+            secure: !program.share
+        }, 
+        (err, config) => {
+            if(!err) {
+                console.log(config);
+                process.exit(0);
+            } 
+            console.error(err);
+            process.exit(1);
+        }
+    );
+});
+
+rl.on("close", () => {
+    process.exit(0);
+});
+

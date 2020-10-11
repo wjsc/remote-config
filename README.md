@@ -60,10 +60,12 @@ npm i
 ```
 cd ./client/cli
 
-node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -v value1 -h 127.0.0.1:3000
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h 127.0.0.1:3000
+// The CLI will prompt for value
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 
 node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h 127.0.0.1:3000
+// The CLI will prompt for value
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 ```
 
@@ -71,7 +73,7 @@ node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n n
 ```
 cd ./client/cli
 
-node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -v value2 -h 127.0.0.1:3000 -x
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h 127.0.0.1:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 
 node get_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h 127.0.0.1:3000 -x
@@ -110,7 +112,6 @@ Options:
   -a, --cacert <path>          CA Certificate path
   -n, --namespace <namespace>  Config namespace
   -k, --key <key>              Config key
-  -v, --value <value>          Config value
   -h, --host <value>           Remote config server ip:port
   --help                       display help for command
 ```

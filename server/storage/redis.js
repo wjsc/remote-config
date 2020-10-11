@@ -27,6 +27,7 @@ const del = client => (namespace, key) => {
 const init = (...args) => {
     const dbClient = redis.createClient(...args);
     dbClient.on("error", (error) => console.error(error) || process.exit(1));
+    console.info('redis connected');
     return {
         set: set(dbClient),
         get: get(dbClient),

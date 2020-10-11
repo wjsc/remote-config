@@ -27,11 +27,14 @@ const del = root => async (namespace, key) => {
     return {};
 }
 
-const init = (root) => ({
-    set: set(root),
-    get: get(root),
-    del: del(root)
-});
+const init = (root) => {
+    console.info('filesystem connected');
+    return {
+        set: set(root),
+        get: get(root),
+        del: del(root)
+    }
+};
 
 module.exports = { 
     init

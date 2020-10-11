@@ -34,6 +34,7 @@ const connect = (ip, port, database, collectionName) => {
 
 const init = async (ip, port, database, collectionName) => {
     const collection = await connect(ip, port, database, collectionName);
+    console.info('mongodb connected');
     return {
         set: set(collection),
         get: get(collection),

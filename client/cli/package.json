@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/wjsc/remote-config-grpc#readme",
   "dependencies": {
-    "@wjsc/remote-config-client": "0.0.7",
+    "@wjsc/remote-config-client": "0.0.8",
     "commander": "^6.1.0"
   }
 }

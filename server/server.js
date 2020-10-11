@@ -1,20 +1,19 @@
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
-const get = storage => ({ request: { namespace, key } }, callback) =>
-    storage.get(namespace, key)
+const promiseToCallback = (promise, callback) => 
+    promise
     .then( result => callback(null , result ))
     .catch( callback );
+
+const get = storage => ({ request: { namespace, key } }, callback) =>
+    promiseToCallback(storage.get(namespace, key), callback)
 
 const set = storage => ({ request: { namespace, key, value } }, callback) =>
-    storage.set(namespace, key, value)
-    .then( result => callback(null , result ))
-    .catch( callback );
+    promiseToCallback(storage.set(namespace, key, value), callback)
 
 const del = storage => ({ request: { namespace, key } }, callback) => 
-    storage.del(namespace, key)
-    .then( result => callback(null , result ))
-    .catch( callback );
+    promiseToCallback(storage.del(namespace, key), callback)
 
 const init = (storage, credentials, protoPath, host, caCertificate, privateKey, serverCertificate ) => {
 

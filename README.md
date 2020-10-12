@@ -1,6 +1,6 @@
-# remote-config-grpc 
+# remote-config
 
-Externalized config server with built-in encryption for microservices architecture: https://microservices.io/patterns/externalized-configuration.html
+- Externalized config server & client with built-in encryption for microservices architecture: https://microservices.io/patterns/externalized-configuration.html
 
 ## General
 

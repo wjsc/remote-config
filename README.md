@@ -25,7 +25,41 @@ Externalized config server with built-in encryption for microservices architectu
 docker run --name remote-config-db-redis -p6379:6379 -d redis
 ```
 
-### 2. Build remote config server and connect to redis storage
+### 2. Generate private & public keys for a specific namespace for full TLS/SSL authentication
+- You can ignore this step if no authentication is required
+
+#### 2.1. Install certstrap
+```
+wget https://github.com/square/certstrap/releases/download/v1.1.1/certstrap-v1.1.1-linux-amd64
+mv certstrap-v1.1.1-linux-amd64 certstrap
+chmod +x certstrap
+```
+#### 2.2. Generating a root certificate authority 
+```
+certstrap init --organization "ca" --common-name "ca"
+```
+#### 2.3. Generating a server certificate & Sign server certificate 
+```
+certstrap request-cert --common-name "server" --domain "localhost"
+certstrap sign --CA ca "server"
+```
+#### 2.4. Create client certificate & Sign client certificate 
+```
+certstrap request-cert --common-name "client"
+certstrap sign --CA ca "client"
+```
+
+#### 2.5. Move files to folders
+```
+cp ./out/ca.crt ./server/certs
+cp ./out/server* ./server/certs
+cp ./out/ca.crt ./client/cli/certs
+cp ./out/client* ./client/cli/certs
+```
+
+### 3. Build remote config server and connect to redis storage
+- If no authentication is required, remove CA_CERT_PATH, KEY_PATH & CERT_PATH from command
+
 ```
 cd ./server
 docker build -t remote-config-server:1.0 . 
@@ -43,47 +77,12 @@ docker run -p3000:3000 \
     -d remote-config-server:1.0
 ```
 
-### 3. Install CLI client dependencies
+### 4. Install CLI client dependencies
 ```
 cd ./client/cli
 npm i
 ```
 
-### 4. Generate private & public keys for a specific namespace for full TLS/SSL authentication
-
-#### 1. Install certstrap
-```
-wget https://github.com/square/certstrap/releases/download/v1.1.1/certstrap-v1.1.1-linux-amd64
-mv certstrap-v1.1.1-linux-amd64 certstrap
-chmod +x certstrap
-```
-#### 2. Generating a root certificate authority 
-```
-certstrap init --organization "ca" --common-name "ca"
-```
-#### 3. Generating a server certificate
-```
-certstrap request-cert --common-name "server" --domain "localhost"
-```
-#### 4. Sign server certificate 
-```
-certstrap sign --CA ca "server"
-```
-#### 5. Create client certificate 
-```
-certstrap request-cert --common-name "client"
-```
-#### 6. Sign client certificate 
-```
-certstrap sign --CA ca "client"
-```
-#### 7. Move files to folders
-```
-cp ./out/ca.crt ./server/certs
-cp ./out/server* ./server/certs
-cp ./out/ca.crt ./client/cli/certs
-cp ./out/client* ./client/cli/certs
-```
 
 ### 5. Test saving & retrieving a remote-config with encryption
 ```

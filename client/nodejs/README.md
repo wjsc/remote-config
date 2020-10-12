@@ -6,7 +6,7 @@ Externalized config server with built-in encryption for microservices architectu
 
 - Architecture:
     - Storage engine: redis, mongodb, dynamodb or filesystem
-    - remote-config-server connected to storage engine
+    - remote-config-server: https://hub.docker.com/r/imageswjsc/remote-config-server
     - remote-config-client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
     - remote-config-client for Command line interface(CLI)
 

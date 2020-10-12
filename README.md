@@ -57,7 +57,7 @@ cp ./out/ca.crt ./client/cli/certs
 cp ./out/client* ./client/cli/certs
 ```
 
-### 3. Run remote-config server and connect to redis storage
+### 3. Run remote-config-server and connect to redis storage
 - If no authentication is required, remove CA_CERT_PATH, KEY_PATH & CERT_PATH from command
 
 ```

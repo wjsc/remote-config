@@ -15,7 +15,7 @@ const set = storage => ({ request: { namespace, key, value } }, callback) =>
 const del = storage => ({ request: { namespace, key } }, callback) => 
     promiseToCallback(storage.del(namespace, key), callback)
 
-const init = (storage, credentials, protoPath, host, caCertificate, privateKey, serverCertificate ) => {
+const init = (storage, credentials, protoPath, host, caCertificate, privateKey, serverCertificate, checkClientCertificate ) => {
 
     const packageDefinition = protoLoader.loadSync(protoPath);
     const proto = grpc.loadPackageDefinition(packageDefinition);
@@ -27,7 +27,7 @@ const init = (storage, credentials, protoPath, host, caCertificate, privateKey, 
         del: del(storage)
     });
     
-    const serverCredentials = credentials.createServerCredentials(grpc, caCertificate, privateKey, serverCertificate);
+    const serverCredentials = credentials.createServerCredentials(grpc, caCertificate, privateKey, serverCertificate, checkClientCertificate);
     server.bind(host, serverCredentials);
     server.start();
     return server;

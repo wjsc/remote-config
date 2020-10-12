@@ -16,7 +16,8 @@ const {
     PORT,
     CA_CERT_PATH,
     KEY_PATH,
-    CERT_PATH
+    CERT_PATH,
+    IGNORE_CLIENT_CERT
 } = process.env;
 
 const loadFile = path => path && fs.readFileSync(path, 'utf8');
@@ -36,7 +37,8 @@ const launch = async () => {
         `${HOST}:${PORT }`,
         loadFile(CA_CERT_PATH),
         loadFile(KEY_PATH),
-        loadFile(CERT_PATH)
+        loadFile(CERT_PATH),
+        !IGNORE_CLIENT_CERT
     );
 }
 

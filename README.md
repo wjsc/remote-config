@@ -50,22 +50,50 @@ npm i
 ```
 
 ### 4. Generate private & public keys for a specific namespace for full TLS/SSL authentication
-- Server private key & certificate
-- Client private key & certificate 
-- Certificate authority certificate
-- Example using certstrap: https://jsherz.com/grpc/node/nodejs/mutual/authentication/ssl/2017/10/27/grpc-node-with-mutual-auth.html
 
+#### 1. Install certstrap
+```
+wget https://github.com/square/certstrap/releases/download/v1.1.1/certstrap-v1.1.1-linux-amd64
+mv certstrap-v1.1.1-linux-amd64 certstrap
+chmod +x certstrap
+```
+#### 2. Generating a root certificate authority 
+```
+certstrap init --organization "ca" --common-name "ca"
+```
+#### 3. Generating a server certificate
+```
+certstrap request-cert --common-name "server" --domain "localhost"
+```
+#### 4. Sign server certificate 
+```
+certstrap sign --CA ca "server"
+```
+#### 5. Create client certificate 
+```
+certstrap request-cert --common-name "client"
+```
+#### 6. Sign client certificate 
+```
+certstrap sign --CA ca "client"
+```
+#### 7. Move files to folders
+```
+cp ./out/ca.crt ./server/certs
+cp ./out/server* ./server/certs
+cp ./out/ca.crt ./client/cli/certs
+cp ./out/client* ./client/cli/certs
+```
 
 ### 5. Test saving & retrieving a remote-config with encryption
 ```
 cd ./client/cli
 
-node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h 127.0.0.1:3000
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h localhost:3000
 // The CLI will prompt for value
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 
-node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h 127.0.0.1:3000
-// The CLI will prompt for value
+node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns1 -k key1 -h localhost:3000
 // output: { namespace: 'ns1', key: 'key1', value: 'value1' }
 ```
 
@@ -73,10 +101,11 @@ node get_config.js  -r certs/client.key -l certs/client.crt -a certs/ca.crt -n n
 ```
 cd ./client/cli
 
-node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h 127.0.0.1:3000 -x
+node set_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h localhost:3000 -x
+// The CLI will prompt for value
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 
-node get_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h 127.0.0.1:3000 -x
+node get_config.js -r certs/client.key -l certs/client.crt -a certs/ca.crt -n ns2 -k key2 -h localhost:3000 -x
 // output: { namespace: 'ns2', key: 'key2', value: 'value2' }
 ```
 
@@ -168,6 +197,7 @@ PORT: Server binding port
 CA_CERT_PATH: Optional. Certificate authority certificate path for SSL/TLS authentication. This file must be mounted.
 KEY_PATH: Optional. Server private key path for SSL/TLS authentication. This file must be mounted.
 CERT_PATH: Optional. Server certificate path for SSL/TLS authentication. This file must be mounted.
+IGNORE_CLIENT_CERT: Ignore client certificate, only authenticate server.
 
 /// If CA_CERT_PATH, KEY_PATH & CERT_PATH are not defined, the server can run in insecure mode
 ```

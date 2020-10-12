@@ -5,7 +5,7 @@ Externalized config server with built-in encryption for microservices architectu
 ## General
 
 - Architecture:
-    - Storage engine: redis, mongodb or filesystem
+    - Storage engine: redis, mongodb, dynamodb or filesystem
     - remote-config Server connected to storage engine
     - remote-config Client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
     - remote-config Client for Command line interface(CLI)
@@ -184,6 +184,28 @@ docker run -p3000:3000 \
     -d remote-config-server:1.0
 ```
 
+### Build remote config server and connect to dynamodb as storage engine
+```
+docker run --name remote-config-db-dynamodb -p8000:8000 -d amazon/dynamodb-local
+cd ./server
+docker build -t remote-config-server:1.0 .
+docker run -p3000:3000 \
+    -e STORAGE=dynamodb \
+    -e AWS_REGION=us-east-1 \
+    -e DYNAMODB_ENDPOINT=http://localhost:8000 \
+    -e DATABASE_TABLENAME=remote-config-storage \
+    -e DYNAMODB_CAPACITY_READ=5 \
+    -e DYNAMODB_CAPACITY_WRITE=5 \
+    -e HOST=0.0.0.0 \
+    -e PORT=3000 \
+    -v $PWD/certs:/home/node/certs/ \
+    -e CA_CERT_PATH=/home/node/certs/ca.crt \
+    -e KEY_PATH=/home/node/certs/server.key \
+    -e CERT_PATH=/home/node/certs/server.crt \
+    --name remote-config-server-dynamodb \
+    -d remote-config-server:1.0
+```
+
 ### Environment variables supported
 ```
 STORAGE: Storage engine. Redis OR mongodb OR filesystem
@@ -197,6 +219,13 @@ CA_CERT_PATH: Optional. Certificate authority certificate path for SSL/TLS authe
 KEY_PATH: Optional. Server private key path for SSL/TLS authentication. This file must be mounted.
 CERT_PATH: Optional. Server certificate path for SSL/TLS authentication. This file must be mounted.
 IGNORE_CLIENT_CERT: Ignore client certificate, only authenticate server.
+AWS_REGION: Optional. Region for dynamodb.
+AWS_ENDPOINT: Optional. Endpoint for dynamodb service
+AWS_ACCESS_KEY_ID: Optional. Only for dynamodb. 
+AWS_SECRET_ACCESS_KEY: Optional. Only for dynamodb.
+DATABASE_TABLENAME: Optional. Only for dynamodb.
+DYNAMODB_CAPACITY_READ: Optional. Only for dynamodb.
+DYNAMODB_CAPACITY_WRITE: Optional. Only for dynamodb.
 
 /// If CA_CERT_PATH, KEY_PATH & CERT_PATH are not defined, the server can run in insecure mode
 ```

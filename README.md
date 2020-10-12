@@ -6,9 +6,9 @@ Externalized config server with built-in encryption for microservices architectu
 
 - Architecture:
     - Storage engine: redis, mongodb, dynamodb or filesystem
-    - remote-config Server connected to storage engine
-    - remote-config Client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
-    - remote-config Client for Command line interface(CLI)
+    - remote-config-server connected to storage engine
+    - remote-config-client for nodejs: https://www.npmjs.com/package/@wjsc/remote-config-client
+    - remote-config-client for Command line interface(CLI)
 
 - The remote-config server stores remote-configs with this structure:
     - namespace
@@ -57,12 +57,10 @@ cp ./out/ca.crt ./client/cli/certs
 cp ./out/client* ./client/cli/certs
 ```
 
-### 3. Build remote config server and connect to redis storage
+### 3. Run remote-config server and connect to redis storage
 - If no authentication is required, remove CA_CERT_PATH, KEY_PATH & CERT_PATH from command
 
 ```
-cd ./server
-docker build -t remote-config-server:1.0 . 
 docker run -p3000:3000 \
     -e STORAGE=redis \
     -e DATABASE_HOST=host.docker.internal \
@@ -74,7 +72,7 @@ docker run -p3000:3000 \
     -e KEY_PATH=/home/node/certs/server.key \
     -e CERT_PATH=/home/node/certs/server.crt \
     --name remote-config-server-redis \
-    -d remote-config-server:1.0
+    -d imageswjsc/remote-config-server
 ```
 
 ### 4. Install CLI client dependencies
@@ -145,10 +143,8 @@ Options:
 ```
 
 
-### Build remote config server and connect to filesystem as storage engine
+### Run remote-config-server and connect to filesystem as storage engine
 ```
-cd ./server
-docker build -t remote-config-server:1.0 .
 docker run -p3000:3000 \
     -e STORAGE=filesystem \
     -v $PWD/data:/home/node/.storage \
@@ -159,15 +155,13 @@ docker run -p3000:3000 \
     -e CA_CERT_PATH=/home/node/certs/ca.crt \
     -e KEY_PATH=/home/node/certs/server.key \
     -e CERT_PATH=/home/node/certs/server.crt \
-    -d remote-config-server:1.0
+    -d imageswjsc/remote-config-server
 ```
 
 
-### Build remote config server and connect to mongodb as storage engine
+### Run remote-config-server and connect to mongodb as storage engine
 ```
 docker run --name remote-config-db-mongodb -p27017:27017 -d mongo
-cd ./server
-docker build -t remote-config-server:1.0 .
 docker run -p3000:3000 \
     -e STORAGE=mongodb \
     -e DATABASE_HOST=host.docker.internal \
@@ -181,14 +175,12 @@ docker run -p3000:3000 \
     -e KEY_PATH=/home/node/certs/server.key \
     -e CERT_PATH=/home/node/certs/server.crt \
     --name remote-config-server-mongodb \
-    -d remote-config-server:1.0
+    -d imageswjsc/remote-config-server
 ```
 
-### Build remote config server and connect to dynamodb as storage engine
+### Run remote-config-server and connect to dynamodb as storage engine
 ```
 docker run --name remote-config-db-dynamodb -p8000:8000 -d amazon/dynamodb-local
-cd ./server
-docker build -t remote-config-server:1.0 .
 docker run -p3000:3000 \
     -e STORAGE=dynamodb \
     -e AWS_REGION=us-east-1 \
@@ -203,7 +195,7 @@ docker run -p3000:3000 \
     -e KEY_PATH=/home/node/certs/server.key \
     -e CERT_PATH=/home/node/certs/server.crt \
     --name remote-config-server-dynamodb \
-    -d remote-config-server:1.0
+    -d imageswjsc/remote-config-server
 ```
 
 ### Environment variables supported

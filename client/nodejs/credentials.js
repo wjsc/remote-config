@@ -18,15 +18,13 @@ const createClientCredentials = (grpc, privateKey, caCertificate, clientCertific
 const createSslMutualCredentials = ( grpc, caCertificate, privateKey, clientCertificate ) => 
     grpc.credentials.createSsl(
         Buffer.from(caCertificate, 'utf8'),
-        privateKey && Buffer.from(privateKey, 'utf8'),
-        clientCertificate && Buffer.from(clientCertificate, 'utf8')
+        Buffer.from(privateKey, 'utf8'),
+        Buffer.from(clientCertificate, 'utf8')
     );
 
 const createSslServerCredentials = ( grpc, caCertificate, ) => 
     grpc.credentials.createSsl(
-        Buffer.from(caCertificate, 'utf8'),
-        privateKey && Buffer.from(privateKey, 'utf8'),
-        clientCertificate && Buffer.from(clientCertificate, 'utf8')
+        Buffer.from(caCertificate, 'utf8')
     );
 
 const createInsecureClientCredentials = grpc => grpc.credentials.createInsecure();
